@@ -21,16 +21,16 @@
         <v-list dense>
           <v-list-tile avatar to="/">
           <v-list-tile-avatar
-            color="white"
+            color=""
           >
               <v-img
                 :src="logo"
-                height="34"
+                height="50"
                 contain
               />
             </v-list-tile-avatar>
             <v-list-tile-title class="title">
-              Vuetify MD
+              JWARE
             </v-list-tile-title>
           </v-list-tile>
         </v-list>
@@ -73,7 +73,7 @@
   export default {
     data() {
       return {
-        logo: '/vuetifylogo.png',
+        logo: '/jle.png',
         links: [
           {
             to: '/dashboard',
@@ -91,6 +91,11 @@
             text: 'Job'
           },
           {
+            to: '/expense',
+            icon: 'mdi-atom',
+            text: 'Expense'
+          },
+          {
             to: '/branch',
             icon: 'mdi-anchor',
             text: 'Branch'
@@ -105,31 +110,31 @@
             icon: 'mdi-arrange-bring-to-front',
             text: 'Priority'
           },
-          {
-            to: '/table-list',
-            icon: 'mdi-clipboard-outline',
-            text: 'Table List'
-          },
-          {
-            to: '/typography',
-            icon: 'mdi-format-font',
-            text: 'Typography'
-          },
-          {
-            to: '/icons',
-            icon: 'mdi-chart-bubble',
-            text: 'Icons'
-          },
-          {
-            to: '/maps',
-            icon: 'mdi-map-marker',
-            text: 'Maps'
-          },
-          {
-            to: '/notifications',
-            icon: 'mdi-bell',
-            text: 'Notifications'
-          }
+          // {
+          //   to: '/table-list',
+          //   icon: 'mdi-clipboard-outline',
+          //   text: 'Table List'
+          // },
+          // {
+          //   to: '/typography',
+          //   icon: 'mdi-format-font',
+          //   text: 'Typography'
+          // },
+          // {
+          //   to: '/icons',
+          //   icon: 'mdi-chart-bubble',
+          //   text: 'Icons'
+          // },
+          // {
+          //   to: '/maps',
+          //   icon: 'mdi-map-marker',
+          //   text: 'Maps'
+          // },
+          // {
+          //   to: '/notifications',
+          //   icon: 'mdi-bell',
+          //   text: 'Notifications'
+          // }
         ],
         responsive: true
       }
