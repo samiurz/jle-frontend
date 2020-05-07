@@ -8,7 +8,7 @@
                             <v-form>
                                 <v-text-field
                                     type="text"
-                                    v-model="username"
+                                    v-model="user.email"
                                     prepend-icon="person"
                                     name="username"
                                     label="Login"
@@ -16,7 +16,7 @@
                                 ></v-text-field>
                                 <v-text-field
                                     type="password"
-                                    v-model="password"
+                                    v-model="user.password"
                                     prepend-icon="lock"
                                     name="password"
                                     label="Password"
@@ -43,16 +43,13 @@
 <script>
 import { mapActions } from 'vuex'
 import materialCard from '~/components/material/AppCard'
-
 export default {
     components: {
         materialCard
     },
     data() {
         return {
-            username: 'admin',
-            password: 'admin',
-            defaultUserPassword: 'admin'
+            user: {}
         }
     },
     computed: {
@@ -66,7 +63,7 @@ export default {
         }),
 
         async authenticate() {
-            //await console.log('testing')
+            await console.log('testing')
             this.$router.push({ path: 'dashboard' });
         },
         asyncRouterPush(route) {
@@ -79,6 +76,16 @@ export default {
                 .then(() => {
                     //this.$root.$emit('someEvent')
                     console.log("testing")
+                })
+        },
+        login() {
+            this.$axios.post('/api/v1/login', this.user)
+                .then(function (response) {
+                    console.log(response);
+                    this.$router.push({ path: 'dashboard' });
+                })
+                .catch(function (error) {
+                    console.log(error);
                 })
         }
     }
