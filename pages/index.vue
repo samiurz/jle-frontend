@@ -12,7 +12,6 @@
                                     prepend-icon="person"
                                     name="username"
                                     label="Login"
-                                    :placeholder="defaultUserPassword"
                                 ></v-text-field>
                                 <v-text-field
                                     type="password"
@@ -20,7 +19,6 @@
                                     prepend-icon="lock"
                                     name="password"
                                     label="Password"
-                                    :placeholder="defaultUserPassword"
                                 ></v-text-field>
                             </v-form>
                         </v-card-text>
@@ -29,7 +27,7 @@
                                 <v-btn
                                     color="success"
                                     :disabled="isDisabled"
-                                    @click="authenticate()"
+                                    @click="sendUserData()"
                                 >Login</v-btn>
                             </v-layout>
                         </v-card-actions>
@@ -52,20 +50,10 @@ export default {
             user: {}
         }
     },
-    computed: {
-        isDisabled() {
-            return this.username !== this.defaultUserPassword || this.password !== this.defaultUserPassword;
-        }
-    },
     methods: {
         ...mapActions({
             setUsername: 'user/setUsername'
         }),
-
-        async authenticate() {
-            await console.log('testing')
-            this.$router.push({ path: 'dashboard' });
-        },
         asyncRouterPush(route) {
             return new Promise(resolve => {
                 resolve(this.$router.push({ path: 'dashboard' }))
@@ -74,19 +62,24 @@ export default {
         doSomething(myVar) {
             this.asyncRouterPush(myVar)
                 .then(() => {
-                    //this.$root.$emit('someEvent')
+                    //this.$root.$emit('someEvent') 
                     console.log("testing")
                 })
         },
-        login() {
-            this.$axios.post('/api/v1/login', this.user)
-                .then(function (response) {
-                    console.log(response);
-                    this.$router.push({ path: 'dashboard' });
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
+        async authenticate() {
+            await this.setUsername("test");
+            this.$router.push({ path: 'dashboard' })
+        },
+        async sendUserData() {
+            try {
+                const response = await this.$axios.post('/api/v1/login', this.user)
+                await this.setUsername(response)
+                this.$router.push({ path: 'dashboard' })
+                console.log(response)
+
+            } catch (e) {
+                console.log(e)
+            }
         }
     }
 }
