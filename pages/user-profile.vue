@@ -262,6 +262,18 @@ export default {
         },
         addItem() {
             this.dialog = true
+            this.loadDependencies()
+        },
+        async loadDependencies() {
+            try {
+                const response = await this.$axios.get('/api/v1/users-dependencies')
+                // await this.setUsername(response)
+                // this.$router.push({ path: 'dashboard' })
+                console.log(response)
+
+            } catch (e) {
+                console.log(e)
+            }
         }
     },
 };

@@ -41,6 +41,7 @@
 <script>
 import { mapActions } from 'vuex'
 import materialCard from '~/components/material/AppCard'
+import Cookies from 'js-cookie'
 export default {
     components: {
         materialCard
@@ -73,9 +74,10 @@ export default {
         async sendUserData() {
             try {
                 const response = await this.$axios.post('/api/v1/login', this.user)
+                Cookies.set('token', `Bearer ${response.data.response.token}`)
                 await this.setUsername(response)
                 this.$router.push({ path: 'dashboard' })
-                console.log(response)
+                //console.log(response.data.response.token)
 
             } catch (e) {
                 console.log(e)
