@@ -24,7 +24,6 @@ export default {
         coreView
     },
     created() {
-        console.log('here')
         this.$axios.defaults.headers.common.Authorization = Cookies.get('token')
     },
 }
