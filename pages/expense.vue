@@ -7,7 +7,8 @@
           title="Expense Claim Form"
           text="Please add your expense description separately"
         >
-          <v-data-table :headers="headers" :items="items" hide-actions>
+
+         <v-data-table :headers="headers" :items="items" hide-actions>
             <template slot="headerCell" slot-scope="{ header }">
               <span
                 class="subheading font-weight-light text-success text--darken-3"
@@ -15,25 +16,19 @@
               />
             </template>
             <template slot="items" slot-scope="{ item }">
-              <td>{{ item.job_code }}</td>
-              <td>{{ item.description }}</td>
-              <td>{{ item.date }}</td>
-              <td class="text-xs-right">{{ item.cost }}</td>
+                  <td><input v-model="item.name" /></td>
+                  <td><input v-model="item.description" /></td>
+                  <td><input v-model="item.date" /></td>
+                  <td><input v-model="item.unit_cost" /></td>
+                  <td class="hide-print"><button class="btn-floating" v-on:click="remove_item(index)">X</button></td>
             </template>
           </v-data-table>
+          <v-btn class="ma-2" v-on:click="add_item" color="dark" dark>
+              <v-icon></v-icon> Add More
+          </v-btn>
         </material-card>
-        <v-form>
-          <v-flex xs12 md12>
-            <p class="text-xs-right">
-              Incl. GST: $500.00 
-            </p>
-            <p class="text-xs-right">
-              Excl. GST: $425.00 
-            </p>
-          </v-flex>
-        </v-form>
       </v-flex>
-      <v-flex xs12 md12>
+        <v-flex xs12 md12>
         <material-card
           color="green"
           title="Documents"
@@ -70,11 +65,20 @@ export default {
 
   data: () => ({
     picker: new Date().toISOString().substr(0, 10),
+    amount_due: 0,
+    items: [
+      {
+        name: '',
+        description: '',
+        date:'',
+        unit_cost: '',
+      }
+    ],
     headers: [
       {
         sortable: false,
-        text: "Job Code",
-        value: "job_code"
+        text: "Item",
+        value: "name"
       },
       {
         sortable: false,
@@ -84,48 +88,44 @@ export default {
       {
         sortable: false,
         text: "Date",
-        value: "date"
+        value: "",
       },
       {
         sortable: false,
         text: "Cost",
-        value: "cost",
-        align: "right"
+        value: "",
+      },
+      {
+        sortable: false,
+        text: "Remove",
+        value: "",
       }
     ],
-    items: [
-      {
-        job_code: "001",
-        description: "Nestle Development work",
-        date: "27-02-2020",
-        cost: "$35,738"
-      },
-      {
-        job_code: "002",
-        description: "Holcim Cement",
-        date: "27-03-2020",
-        cost: "$23,738"
-      },
-      {
-        job_code: "003",
-        description: "Devenport",
-        date: "27-04-2020",
-        cost: "$56,142"
-      },
-      {
-        job_code: "004",
-        description: "Uber",
-        date: "27-05-2020",
-        cost: "$38,735"
-      }
-    ]
   }),
-
+  methods: {
+    format_price: (number) => {
+      return '$' + parseFloat(number).toFixed(2)
+    },
+    add_item: function () {
+      this.items.push({
+        name: '',
+        description: '',
+        date:'',
+        unit_cost: '',
+      })
+    },
+    update_value: function (index, event, property) {
+      this.items[index][property] = event.target.innerText
+    },
+    remove_item: function (index) {
+      this.items.splice(index, 1)
+    }
+  },
   computed: {
     ...mapGetters({
       user: "user/getUser",
       fullname: "user/getFullname"
     })
   }
-};
+}
 </script>

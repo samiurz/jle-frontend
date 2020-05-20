@@ -3,7 +3,7 @@
         <v-container fluid fill-height>
             <v-layout align-center justify-center>
                 <v-flex xs12 sm8 md4>
-                    <material-card color="success" elevation="12" title="Connexion">
+                    <material-card color="success" elevation="12" title="JLE">
                         <v-card-text>
                             <v-form>
                                 <v-text-field

@@ -82,6 +82,11 @@ export default {
                     text: 'Branch'
                 },
                 {
+                    to: '/customer',
+                    icon: 'mdi-all-inclusive',
+                    text: 'Customer'
+                },
+                {
                     to: '/gl',
                     icon: 'mdi-archive',
                     text: 'General Ledger Code'
@@ -91,11 +96,11 @@ export default {
                     icon: 'mdi-arrange-bring-to-front',
                     text: 'Priority'
                 },
-                {
-                    to: '/table-list',
-                    icon: 'mdi-clipboard-outline',
-                    text: 'Table List'
-                },
+                // {
+                //     to: '/table-list',
+                //     icon: 'mdi-clipboard-outline',
+                //     text: 'Table List'
+                // },
                 // {
                 //   to: '/typography',
                 //   icon: 'mdi-format-font',

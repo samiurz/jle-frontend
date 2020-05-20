@@ -4,7 +4,7 @@
             <v-flex md12>
                 <material-card
                     color="green"
-                    title="Employee information"
+                    title="customer information"
                     text=""
                 >
                     <v-tooltip bottom>
@@ -21,12 +21,12 @@
                                 <v-icon dark>mdi-plus</v-icon>
                             </v-btn>
                         </template>
-                        <span><font color="white">Add New Employee</font></span>
+                        <span><font color="white">Add New Customer</font></span>
                     </v-tooltip>
                     {{pagination}}
                     <v-data-table
                         :headers="headers"
-                        :items="users"
+                        :items="customers"
                         :options.sync="pagination"
                         :loading="loading"
                         :server-items-length="totalItems"
@@ -46,10 +46,7 @@
                             />
                         </template>
                         <template slot="items" slot-scope="{ item }">
-                            <td>{{ item.full_name }}</td>
-                            <td>{{ item.email }}</td>
-                            <td>{{ item.branch.name }}</td>
-                            <td>{{ item.role.name }}</td>
+                            <td>{{ item.name }}</td>
                             <td align="center">
                                 <v-tooltip top content-class="top">
                                     <v-btn
@@ -61,7 +58,7 @@
                                     >
                                         <v-icon color="primary">mdi-pencil</v-icon>
                                     </v-btn>
-                                    <span><font color="white">Edit Employee Information</font></span>
+                                    <span><font color="white">Edit Customer Information</font></span>
                                 </v-tooltip>
                                 <v-tooltip top content-class="top">
                                     <v-btn
@@ -73,7 +70,7 @@
                                     >
                                         <v-icon color="error">mdi-close</v-icon>
                                     </v-btn>
-                                    <span><font color="white">Remove Employee Information</font></span>
+                                    <span><font color="white">Remove Customer</font></span>
                                 </v-tooltip>
                             </td>
                         </template>
@@ -85,7 +82,7 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">Employee Profile</span>
+          <span class="headline">customer</span>
         </v-card-title>
         <v-card-text>
          <v-form
@@ -99,56 +96,11 @@
           <v-container>
             <v-row>
               <v-col cols="12" sm="6" md="4">
-                <v-select
-                    item-text="name"
-                    item-value="id"
-                    :items="branches"
-                    label="Branch"
-                    v-model="user.branch_id"
-                    :rules="validationRules.branch"
-                ></v-select>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                    label="Full Name"
-                    v-model="user.full_name"
+                    label="Customer Name"
+                    v-model="customer.name"
                     class="purple-input"
-                    :rules="validationRules.full_name"
-                />
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                    class="purple-input"
-                    v-model="user.username"
-                    label="User Name"
-                    :rules="validationRules.username"
-                />
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-select
-                    item-text="name"
-                    item-value="id"
-                    :items="roles"
-                    label="Role"
-                    v-model="user.role_id"
-                    :rules="validationRules.role"
-                ></v-select>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                 <v-text-field
-                    label="Email Address"
-                    class="purple-input"
-                    v-model="user.email"
-                    :rules="validationRules.email"
-                />
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                    label="Password"
-                    type="password"
-                    class="purple-input"
-                    v-model="user.password"
-                    :rules="validationRules.password"
+                    :rules="validationRules.name"
                 />
               </v-col>
             </v-row>
@@ -186,24 +138,9 @@ export default {
     data: () => ({
         headers: [
             {
-                sortable: false,
-                text: "Full Name",
-                value: "full_name",
-            },
-            {
                 sortable: true,
-                text: "Email",
-                value: "email"
-            },
-            {
-                sortable: true,
-                text: "Role",
-                value: "role.name"
-            },
-            {
-                sortable: true,
-                text: "Branch",
-                value: "branch.name",
+                text: "customer Name",
+                value: "name",
             },
             {
                 sortable: false,
@@ -211,113 +148,40 @@ export default {
                 align: "center"
             }
         ],
-        items: [
-            {
-                name: "Dakota Rice",
-                country: "Niger",
-                city: "Oud-Tunrhout",
-                salary: "$35,738"
-            },
-            {
-                name: "Minerva Hooper",
-                country: "Curaçao",
-                city: "Sinaai-Waas",
-                salary: "$23,738"
-            },
-            {
-                name: "Sage Rodriguez",
-                country: "Netherlands",
-                city: "Overland Park",
-                salary: "$56,142"
-            },
-            {
-                name: "Philip Chanley",
-                country: "Korea, South",
-                city: "Gloucester",
-                salary: "$38,735"
-            },
-            {
-                name: "Doris Greene",
-                country: "Malawi",
-                city: "Feldkirchen in Kārnten",
-                salary: "$63,542"
-            },
-            {
-                name: "Mason Porter",
-                country: "Chile",
-                city: "Gloucester",
-                salary: "$78,615"
-            }
-        ],
         pagination: {},
         loading: false,
         totalItems: 0,
         sort: '',
         dialog: false,
-        branches: [],
-        roles: [],
-        user: {
-            full_name: '',
-            username: '',
-            email: '',
-            password: '',
-            branch_id: '',
-            role_id: '',
+        customers: [],
+        customer: {
+            name: '',
         },
         valid: false,
         editMode: false,
         validationRules: {
-            full_name: [
-                v => !!v || "Name is required",
+            name: [
+                v => !!v || "customer Name is required",
                 v =>
                     (v && v.length <= 20) ||
-                    "Name must be less than 20 characters"
-            ],
-            username: [
-                v => !!v || "Name is required",
-                v =>
-                    (v && v.length <= 10) ||
-                    "Name must be less than 20 characters"
-            ],
-            email: [
-                v => !!v || "Email is required",
-                v => !v || /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
-            ],
-            password: [
-                v => !!v || "Password is required",
-                v =>
-                    (v && v.length <= 10) ||
-                    "Name must be less than 10 characters"
-            ],
-            branch: [
-                v => !!v || "Branch is required",
-                v =>
-                    (v && v > 0) ||
-                    "Branch must be selected"
-            ],
-            role: [
-                v => !!v || "Role is required",
-                v =>
-                    (v && v > 0) ||
-                    "Role must be selected"
+                    "customer Name must be less than 20 characters"
             ],
         },
-        users: []
+        customers: []
     }),
     methods: {
         updatePagination() {
         },
         addItem() {
-            this.user = {}
+            this.customer = {}
             this.dialog = true
             this.loadDependencies()
         },
         async loadDependencies() {
             try {
                 this.loading = true
-                const response = await this.$axios.get('/api/v1/users-dependencies')
-                this.branches = response.data.response.branches.data
-                this.roles = response.data.response.roles.data
+                const response = await this.$axios.get('/api/v1/customers-dependencies')
+                this.customers = response.data.response.customers.data
                 this.loading = false
 
             } catch (e) {
@@ -328,7 +192,7 @@ export default {
         async create() {
             try {
                 this.loading = true
-                const response = await this.$axios.post('/api/v1/users', this.user)
+                const response = await this.$axios.post('/api/v1/customers', this.customer)
                 this.fetch()
                 this.dialog = false
                 this.loading = false
@@ -341,7 +205,7 @@ export default {
         async update() {
             try {
                 this.loading = true
-                const response = await this.$axios.put(`/api/v1/users/${this.user.id}`, this.user)
+                const response = await this.$axios.put(`/api/v1/customers/${this.customer.id}`, this.customer)
                 this.fetch()
                 this.dialog = false
                 this.loading = false
@@ -367,9 +231,9 @@ export default {
         async fetch() {
             try {
                 this.loading = true
-                const baseURI = `/api/v1/users`
+                const baseURI = `/api/v1/customers`
                 const response = await this.$axios.get(baseURI)
-                this.users = response.data.response.data.rows
+                this.customers = response.data.response.data.rows
                 this.totalItems = response.data.response.data.total_rows
                 console.log(response.data.response.data.total_rows)
                 this.loading = false
@@ -381,14 +245,14 @@ export default {
         },
         editItem(item) {
             this.editMode = true
-            this.user = Object.assign({}, item)
+            this.customer = Object.assign({}, item)
             this.dialog = true
             this.loadDependencies()
         },
         async deleteItem(item) {
             try {
                 this.loading = true
-                const response = await this.$axios.delete(`/api/v1/users/${item.id}`)
+                const response = await this.$axios.delete(`/api/v1/customers/${item.id}`)
                 this.fetch()
                 this.loading = false
 
