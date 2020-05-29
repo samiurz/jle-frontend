@@ -26,7 +26,6 @@
                             <v-layout justify-center align-center>
                                 <v-btn
                                     color="success"
-                                    :disabled="isDisabled"
                                     @click="sendUserData()"
                                 >Login</v-btn>
                             </v-layout>
