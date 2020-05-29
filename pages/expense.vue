@@ -83,9 +83,18 @@
       </v-flex>
     </v-layout>
     <v-row justify="center">
-      <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar dark color="primary">
+      <!-- <v-btn color="primary" class="ma-2" dark @click="dialog = true">Open Dialog 1</v-btn>
+      <v-btn color="primary" class="ma-2" dark @click="dialog2 = true">Open Dialog 2</v-btn>
+      <v-btn color="primary" class="ma-2" dark @click="dialog3 = true">Open Dialog 3</v-btn>-->
+      <v-dialog
+        v-model="dialog"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
+        scrollable
+      >
+        <v-card tile>
+          <v-toolbar flat dark color="primary">
             <v-btn icon dark @click="dialog = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
@@ -94,58 +103,71 @@
             <v-toolbar-items>
               <v-btn dark text @click="dialog = false">Save</v-btn>
             </v-toolbar-items>
+            <v-menu bottom right offset-y>
+              <template v-slot:activator="{ on }">
+                <v-btn dark icon v-on="on">
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item v-for="(item, i) in items" :key="i" @click="() => {}">
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-toolbar>
-          <v-container fill-height fluid grid-list-xl>
-            <v-layout justify-center wrap>
-              <v-flex xs12 md12>
-                <material-card color="green" title="Edit Profile" text="Complete your profile">
-                  <v-form>
-                    <v-container py-0>
-                      <v-layout wrap>
-                        <v-flex xs12 md6>
-                          <v-text-field label="Expense Claim Details" />
-                        </v-flex>
-                        <v-flex xs12 md6>
-                          <v-text-field class="purple-input" label="Date" />
-                        </v-flex>
-                      </v-layout>
-                    </v-container>
-                  </v-form>
-                  <v-flex md12>
-                      <v-data-table :headers="headers" :items="items" hide-actions>
-                        <template slot="headerCell" slot-scope="{ header }">
-                          <span
-                            class="subheading font-weight-light text-success text--darken-3"
-                            v-text="header.text"
-                          />
-                        </template>
-                        <template slot="items" slot-scope="{ item }">
-                          <td>
-                            <input v-model="item.name" />
-                          </td>
-                          <td>
-                            <input v-model="item.description" />
-                          </td>
-                          <td>
-                            <input v-model="item.date" />
-                          </td>
-                          <td>
-                            <input v-model="item.unit_cost" />
-                          </td>
-                          <td class="hide-print">
-                            <button class="btn-floating" v-on:click="remove_item(index)">X</button>
-                          </td>
-                        </template>
-                      </v-data-table>
-                      <v-btn class="ma-2" v-on:click="add_item" color="dark" dark>
-                        <v-icon></v-icon>Add More
-                      </v-btn>
-                  </v-flex>
-                </material-card>
-              </v-flex>
-              <v-flex xs12 md4></v-flex>
-            </v-layout>
-          </v-container>
+          <v-card-text>
+            <v-container fill-height fluid grid-list-xl>
+              <v-layout justify-center wrap>
+                <v-flex xs12 md8>
+                  <material-card color="green" title="Edit Profile" text="Complete your profile">
+                    <v-form>
+                      <v-container py-0>
+                        <v-layout wrap>
+                          <v-flex xs12 md6>
+                            <v-text-field label="Expense Claim Description" />
+                          </v-flex>
+                          <v-flex xs12 md6>
+                            <v-text-field class="purple-input" label="Date" />
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                    </v-form>
+                    <v-btn color="primary" dark class="ma-2" @click="dialog2 = !dialog2">Add Item</v-btn>
+                  </material-card>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <div style="flex: 1 1 auto;"></div>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="dialog2" max-width="800px">
+        <v-card>
+          <v-card-title>Expense Item</v-card-title>
+          <v-form>
+            <v-container py-0>
+              <v-layout wrap>
+                <v-flex xs12 md3>
+                  <v-text-field label="Expense Claim Description" />
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-text-field class="purple-input" label="Date" />
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-text-field class="purple-input" label="Job ID" />
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-text-field class="purple-input" label="Cost" />
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-form>
+          <v-card-actions>
+            <v-btn color="danger" text @click="dialog2 = false">Close</v-btn>
+            <v-btn color="primary" >Save</v-btn>
+          </v-card-actions>
         </v-card>
       </v-dialog>
     </v-row>
@@ -210,41 +232,34 @@ export default {
       ]
     },
     gls: [],
-    amount_due: 0,
+    dialog: false,
+    dialog2: false,
+    dialog3: false,
+    notifications: false,
+    sound: true,
+    widgets: false,
     items: [
       {
-        name: "",
-        description: "",
-        date: "",
-        unit_cost: ""
+        title: "Click Me"
+      },
+      {
+        title: "Click Me"
+      },
+      {
+        title: "Click Me"
+      },
+      {
+        title: "Click Me 2"
       }
     ],
-    headers: [
-      {
-        sortable: false,
-        text: "Item",
-        value: "name"
-      },
-      {
-        sortable: false,
-        text: "Description",
-        value: "description"
-      },
-      {
-        sortable: false,
-        text: "Date",
-        value: ""
-      },
-      {
-        sortable: false,
-        text: "Cost",
-        value: ""
-      },
-      {
-        sortable: false,
-        text: "Remove",
-        value: ""
-      }
+    select: [
+      { text: "State 1" },
+      { text: "State 2" },
+      { text: "State 3" },
+      { text: "State 4" },
+      { text: "State 5" },
+      { text: "State 6" },
+      { text: "State 7" }
     ]
   }),
   methods: {
@@ -343,24 +358,7 @@ export default {
         }`;
       }
       this.fetchItems();
-    },
-    format_price: number => {
-      return "$" + parseFloat(number).toFixed(2);
-    },
-    add_item: function() {
-      this.items.push({
-        name: "",
-        description: "",
-        date: "",
-        unit_cost: ""
-      });
-    },
-    update_value: function(index, event, property) {
-      this.items[index][property] = event.target.innerText;
-    },
-    remove_item: function(index) {
-      this.items.splice(index, 1);
     }
-  },
-}
+  }
+};
 </script>
